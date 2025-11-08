@@ -2,6 +2,11 @@ import { CollectionConfig } from 'payload'
 
 export const Page: CollectionConfig = {
   slug: 'pages',
+    access: {
+      read: ({ req }) => {
+        return !!req.user; 
+      },
+    },
   labels: {
     singular: 'Page',
     plural: 'Pages',
