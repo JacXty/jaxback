@@ -5,9 +5,13 @@ export const Users: CollectionConfig = {
   admin: {
     useAsTitle: 'email',
   },
-  auth: true,
+  auth: {
+    // 1. Habilita el login tradicional (email/password), equivalente a 'auth: true'
+    verify: false,
+    // 2. Habilita la creación de API Keys en el Admin
+    useAPIKey: true,
+  },
   fields: [
-    // Email added by default
-    // Add more fields as needed
+    // Email y Password son añadidos automáticamente por la configuración 'auth'
   ],
 }
