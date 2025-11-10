@@ -23,10 +23,12 @@ import { cloudinaryAdapter } from './adapters/cloudinaryAdapter'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const allowedOrigins = process.env.CORS_ORIGINS?.split(',') || ['http://localhost:5173']
+
 export default buildConfig({
-  cors: {
-    origins: ['http://localhost:3000', 'https://jacxty.netlify.app'],
-  },
+  cors: allowedOrigins,
+  csrf: allowedOrigins,
+
   admin: {
     user: Users.slug,
     importMap: {
