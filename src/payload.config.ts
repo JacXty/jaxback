@@ -23,17 +23,21 @@ import { cloudinaryAdapter } from './adapters/cloudinaryAdapter'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const allowedOrigins = process.env.CORS_ORIGINS?.split(',') || ['http://localhost:5173']
+const allowedOrigins = process.env.CORS_ORIGINS?.split(',') || [
+  'http://localhost:5173',
+  'http://localhost:3000',
+]
 
 export default buildConfig({
   cors: allowedOrigins,
   csrf: allowedOrigins,
 
   admin: {
-    user: Users.slug,
+    user: 'users',
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    autoRefresh: true,
   },
   collections: [Users, Media, Page, About, Skills, Education, Experience, Projects],
   editor: lexicalEditor(),

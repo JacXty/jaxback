@@ -133,6 +133,7 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
+  role: 'admin' | 'editor' | 'user';
   updatedAt: string;
   createdAt: string;
   enableAPIKey?: boolean | null;
@@ -219,6 +220,7 @@ export interface Education {
   id: string;
   about: string | About;
   school: string;
+  description?: string | null;
   degree: string;
   startDate: string;
   endDate?: string | null;
@@ -234,7 +236,21 @@ export interface Experience {
   about: string | About;
   company: string;
   position: string;
-  description: string;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   startDate: string;
   endDate?: string | null;
   updatedAt: string;
@@ -384,6 +400,7 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
   enableAPIKey?: T;
@@ -464,6 +481,7 @@ export interface SkillsSelect<T extends boolean = true> {
 export interface EducationSelect<T extends boolean = true> {
   about?: T;
   school?: T;
+  description?: T;
   degree?: T;
   startDate?: T;
   endDate?: T;
