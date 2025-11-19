@@ -1,3 +1,4 @@
+import { isAdmin, isAdminOrSelf } from '@/access'
 import { CollectionConfig } from 'payload'
 
 export const About: CollectionConfig = {
