@@ -209,6 +209,8 @@ export interface Skill {
   about: string | About;
   name: string;
   logo?: (string | null) | Media;
+  url?: string | null;
+  category: 'front' | 'back' | 'qa' | 'devops' | 'design';
   updatedAt: string;
   createdAt: string;
 }
@@ -471,6 +473,8 @@ export interface SkillsSelect<T extends boolean = true> {
   about?: T;
   name?: T;
   logo?: T;
+  url?: T;
+  category?: T;
   updatedAt?: T;
   createdAt?: T;
 }
