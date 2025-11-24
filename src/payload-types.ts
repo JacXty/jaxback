@@ -75,6 +75,8 @@ export interface Config {
     education: Education;
     experience: Experience;
     projects: Project;
+    'user-info': UserInfo;
+    contacts: Contact;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -90,6 +92,8 @@ export interface Config {
     education: EducationSelect<false> | EducationSelect<true>;
     experience: ExperienceSelect<false> | ExperienceSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    'user-info': UserInfoSelect<false> | UserInfoSelect<true>;
+    contacts: ContactsSelect<false> | ContactsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -297,6 +301,56 @@ export interface Project {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-info".
+ */
+export interface UserInfo {
+  id: string;
+  about: string | About;
+  items?:
+    | {
+        /**
+         * Example: Full Name, Birth Date, Birth Place, Professional Title, Languages, Experience Years...
+         */
+        label: string;
+        /**
+         * Example: Jason Enmanuel Uyaguari Angamarca, 2000-06-22, Loja - Ecuador, 5 years, English/Spanish...
+         */
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contacts".
+ */
+export interface Contact {
+  id: string;
+  about: string | About;
+  items?:
+    | {
+        /**
+         * Example: WhatsApp, LinkedIn, GitHub, Email...
+         */
+        network: string;
+        /**
+         * Username, email, phone number, etc.
+         */
+        profile: string;
+        /**
+         * Optional link like wa.me, linkedin.com, github.com, mailto:, etc.
+         */
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -350,6 +404,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'projects';
         value: string | Project;
+      } | null)
+    | ({
+        relationTo: 'user-info';
+        value: string | UserInfo;
+      } | null)
+    | ({
+        relationTo: 'contacts';
+        value: string | Contact;
       } | null)
     | ({
         relationTo: 'payload-kv';
@@ -527,6 +589,39 @@ export interface ProjectsSelect<T extends boolean = true> {
   background?: T;
   startDate?: T;
   endDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-info_select".
+ */
+export interface UserInfoSelect<T extends boolean = true> {
+  about?: T;
+  items?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contacts_select".
+ */
+export interface ContactsSelect<T extends boolean = true> {
+  about?: T;
+  items?:
+    | T
+    | {
+        network?: T;
+        profile?: T;
+        url?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
