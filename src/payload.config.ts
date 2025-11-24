@@ -19,21 +19,29 @@ import { Education } from './collections/Education'
 import { Experience } from './collections/Experience'
 import { Projects } from './collections/Projects'
 import { cloudinaryAdapter } from './adapters/cloudinaryAdapter'
+import { UserInfo } from './collections/UserInfo'
+import { Contacts } from './collections/Contact'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const allowedOrigins = process.env.CORS_ORIGINS?.split(',') || [
+  'http://localhost:5173',
+  'http://localhost:3000',
+]
+
 export default buildConfig({
-  cors: {
-    origins: ['http://localhost:3000', 'https://jacxty.netlify.app'],
-  },
+  cors: allowedOrigins,
+  csrf: allowedOrigins,
+
   admin: {
-    user: Users.slug,
+    user: 'users',
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    autoRefresh: true,
   },
-  collections: [Users, Media, Page, About, Skills, Education, Experience, Projects],
+  collections: [Users, Media, Page, About, Skills, Education, Experience, Projects, UserInfo, Contacts],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

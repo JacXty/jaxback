@@ -75,6 +75,8 @@ export interface Config {
     education: Education;
     experience: Experience;
     projects: Project;
+    'user-info': UserInfo;
+    contacts: Contact;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -90,6 +92,8 @@ export interface Config {
     education: EducationSelect<false> | EducationSelect<true>;
     experience: ExperienceSelect<false> | ExperienceSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    'user-info': UserInfoSelect<false> | UserInfoSelect<true>;
+    contacts: ContactsSelect<false> | ContactsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -133,6 +137,7 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
+  role: 'admin' | 'editor' | 'user';
   updatedAt: string;
   createdAt: string;
   enableAPIKey?: boolean | null;
@@ -208,6 +213,8 @@ export interface Skill {
   about: string | About;
   name: string;
   logo?: (string | null) | Media;
+  url?: string | null;
+  category: 'front' | 'back' | 'qa' | 'devops' | 'design';
   updatedAt: string;
   createdAt: string;
 }
@@ -219,6 +226,7 @@ export interface Education {
   id: string;
   about: string | About;
   school: string;
+  description?: string | null;
   degree: string;
   startDate: string;
   endDate?: string | null;
@@ -234,7 +242,21 @@ export interface Experience {
   about: string | About;
   company: string;
   position: string;
-  description: string;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   startDate: string;
   endDate?: string | null;
   updatedAt: string;
@@ -274,6 +296,56 @@ export interface Project {
   background?: string | null;
   startDate?: string | null;
   endDate?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-info".
+ */
+export interface UserInfo {
+  id: string;
+  about: string | About;
+  items?:
+    | {
+        /**
+         * Example: Full Name, Birth Date, Birth Place, Professional Title, Languages, Experience Years...
+         */
+        label: string;
+        /**
+         * Example: Jason Enmanuel Uyaguari Angamarca, 2000-06-22, Loja - Ecuador, 5 years, English/Spanish...
+         */
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contacts".
+ */
+export interface Contact {
+  id: string;
+  about: string | About;
+  items?:
+    | {
+        /**
+         * Example: WhatsApp, LinkedIn, GitHub, Email...
+         */
+        network: string;
+        /**
+         * Username, email, phone number, etc.
+         */
+        profile: string;
+        /**
+         * Optional link like wa.me, linkedin.com, github.com, mailto:, etc.
+         */
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -334,6 +406,14 @@ export interface PayloadLockedDocument {
         value: string | Project;
       } | null)
     | ({
+        relationTo: 'user-info';
+        value: string | UserInfo;
+      } | null)
+    | ({
+        relationTo: 'contacts';
+        value: string | Contact;
+      } | null)
+    | ({
         relationTo: 'payload-kv';
         value: string | PayloadKv;
       } | null);
@@ -384,6 +464,7 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
   enableAPIKey?: T;
@@ -454,6 +535,8 @@ export interface SkillsSelect<T extends boolean = true> {
   about?: T;
   name?: T;
   logo?: T;
+  url?: T;
+  category?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -464,6 +547,7 @@ export interface SkillsSelect<T extends boolean = true> {
 export interface EducationSelect<T extends boolean = true> {
   about?: T;
   school?: T;
+  description?: T;
   degree?: T;
   startDate?: T;
   endDate?: T;
@@ -505,6 +589,39 @@ export interface ProjectsSelect<T extends boolean = true> {
   background?: T;
   startDate?: T;
   endDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "user-info_select".
+ */
+export interface UserInfoSelect<T extends boolean = true> {
+  about?: T;
+  items?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contacts_select".
+ */
+export interface ContactsSelect<T extends boolean = true> {
+  about?: T;
+  items?:
+    | T
+    | {
+        network?: T;
+        profile?: T;
+        url?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

@@ -22,6 +22,11 @@ export const Education: CollectionConfig = {
       required: true,
     },
     {
+      name: 'description',
+      type: 'textarea',
+      required: false,
+    },
+    {
       name: 'degree',
       type: 'text',
       required: true,
