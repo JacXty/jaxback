@@ -19,6 +19,8 @@ import { Education } from './collections/Education'
 import { Experience } from './collections/Experience'
 import { Projects } from './collections/Projects'
 import { cloudinaryAdapter } from './adapters/cloudinaryAdapter'
+import { UserInfo } from './collections/UserInfo'
+import { Contacts } from './collections/Contact'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -39,7 +41,7 @@ export default buildConfig({
     },
     autoRefresh: true,
   },
-  collections: [Users, Media, Page, About, Skills, Education, Experience, Projects],
+  collections: [Users, Media, Page, About, Skills, Education, Experience, Projects, UserInfo, Contacts],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
